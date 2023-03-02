@@ -7,7 +7,7 @@ from tkinter import filedialog
 
 # select type ini
 def ini_selection():
-    
+
     # change from old button
     buttonini.configure(text='PVP INI',
                         command=pvp_ini)
@@ -188,36 +188,36 @@ def reset():
         messagebox.showerror("Topwater", "still default")
 
 
-# write location user
-def Savelocation():
-    with open("gamelocation.txt", "w") as file:
-        file.write(textBoxGamepath.get())
-
-
 # getfilelocation
 def getfilepath():
 
     global file_path, buttonini, buttonwater, buttonpretty, folder_check
     file_path = filedialog.askdirectory(initialdir="/", title="Select a file")
     folder_check = file_path + '/ShooterGame/'
-    
+
     # check game path
     if os.path.exists(folder_check):
         textBoxGamepath.delete(0, END)
         textBoxGamepath.insert(0, (file_path))
-        Savelocation()
+        with open('gamelocation.txt', "w")as file:
+            file.write(textBoxGamepath.get())
 
         # show menu
         MainWindow.geometry("300x150")
     else:
         messagebox.showerror("Path", "Not found\nplease change directory")
-        getfilepath()
 
 
-#read location user
-with open('gamelocation.txt', 'r') as file:
-    gamelocation = file.read()
-    print(gamelocation)
+# get data from file txt and check if
+def getdata():
+    checkdirectory = textBoxGamepath.get() + ('/ShooterGame/')
+    if os.path.exists(checkdirectory):
+        MainWindow.geometry("300x150")
+
+
+# read location user
+with open('gamelocation.txt', 'r')as ofile:
+    location = ofile.read()
 
 # ui
 MainWindow = Tk()
@@ -230,9 +230,11 @@ lablePath = Label(
 lablePath.place(x=40, y=1)
 textBoxGamepath = Entry(MainWindow, width=39, justify=CENTER,)
 textBoxGamepath.place(x=5, y=40)
-textBoxGamepath.insert(0, gamelocation)
+textBoxGamepath.insert(0, location)
 
-#menu button
+getdata()
+
+# menu button
 browsepath = Button(
     MainWindow, text="Browse", width=5, command=getfilepath)
 browsepath.place(x=247, y=38)
@@ -248,11 +250,4 @@ buttonpretty.place(x=205, y=70)
 resetbtn = Button(
     MainWindow, text="Reset", height=1, width=11, fg='red', command=reset)
 resetbtn.place(x=205, y=105)
-
-
-# get data from file txt and check if
-checkdirectory = textBoxGamepath.get() + ('/ShooterGame/')
-if os.path.exists(checkdirectory):
-    MainWindow.geometry("300x150")
-
 MainWindow.mainloop()
