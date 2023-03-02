@@ -1,4 +1,5 @@
-('C:\\Users\\Sxyhi\\Desktop\\Gamer Editor Ark\\build\\main\\PYZ-00.pyz',
+('C:\\Users\\Sxyhi\\Desktop\\Gamer Editor '
+ 'Ark\\GamerEditorArk\\build\\main\\PYZ-00.pyz',
  [('_compat_pickle',
    'C:\\Users\\Sxyhi\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_compat_pickle.py',
    'PYMODULE'),
