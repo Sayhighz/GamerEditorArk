@@ -17,22 +17,19 @@ def ini_selection():
                            command=farm_ini)
     buttonpretty.place(x=205, y=70)
     # crate more button
-    global defualtini
+    global defualtini, backbtn, path_ini, check_file
     defualtini = Button(
         MainWindow, text='Default INI', height=1, width=11, command=default_ini)
     defualtini.place(x=5, y=105)
     # create backbutton
-    global backbtn
     backbtn = Button(MainWindow, text="Back", height=1,
                      width=11, fg='red', command=back_page)
     backbtn.place(x=205, y=105)
     # path of ini
     ini = '\Engine\Config\\'
-    global path_ini
     path_ini = textBoxGamepath.get().replace('\\', '/')
     path_ini = textBoxGamepath.get() + ini
 
-    global check_file
     check_file = path_ini + 'BaseDeviceProfiles.ini'
 
 
@@ -45,9 +42,17 @@ def delete_topwater():
     path_water = textBoxGamepath.get() + deleteWater
     check_filewater = path_water + 'SoftEdgeGradient.uasset' and path_water + \
         'SoftEdgeGradient_Linear.uasset'
+    check_filewater2 = path_water + 'SoftEdgeGradient.uasset1' and path_water + \
+        'SoftEdgeGradient_Linear.uasset1'
 
-    # check old file if have will rename
-    if os.path.exists(check_filewater):
+    # check old file if have will rename,remove
+    if os.path.exists(check_filewater) and os.path.exists(check_filewater2):
+        os.remove(path_water + 'SoftEdgeGradient.uasset')
+        os.remove(path_water + 'SoftEdgeGradient_Linear.uasset')
+
+        messagebox.showinfo("Clear Topwater", "Done!")
+
+    elif (os.path.exists(check_filewater)):
         new_name1 = path_water + 'SoftEdgeGradient.uasset1'
         old_name1 = path_water + 'SoftEdgeGradient.uasset'
         os.rename(old_name1, new_name1)
@@ -117,14 +122,14 @@ def default_ini():
 # make pretty map
 def pretty_map():
     # path file
-    prettymap = '\Engine\Content\EngineResources\\'
+    prettymap = '\Engine\Content\EngineMaterials\\'
     path_map = textBoxGamepath.get().replace('\\', '/')
     path_map = textBoxGamepath.get() + prettymap
-    check_filemap = path_map + 'DefaultTexture.uasset'
+    check_filemap = path_map + 'WeightMapPlaceholderTexture.uasset'
     # if have file will rename it
     if os.path.exists(check_filemap):
-        new_name = path_map + 'DefaultTexture.uasset1'
-        old_name = path_map + 'DefaultTexture.uasset'
+        new_name = path_map + 'WeightMapPlaceholderTexture.uasset1'
+        old_name = path_map + 'WeightMapPlaceholderTexture.uasset'
         os.rename(old_name, new_name)
         messagebox.showinfo("PrettyMap", "Done!")
 
@@ -149,31 +154,42 @@ def back_page():
 # resetbuttton
 def reset():
 
-    # path file map
-    prettymap = '\Engine\Content\EngineResources\\'
+    # path file
+    prettymap = '\Engine\Content\EngineMaterials\\'
     path_map = textBoxGamepath.get().replace('\\', '/')
     path_map = textBoxGamepath.get() + prettymap
-    check_filemap = path_map + 'DefaultTexture.uasset1'
-
-    # path file water
-    deleteWater = '\ShooterGame\Content\PrimalEarth\Effects\Textures\Generic\\'
-    path_water = textBoxGamepath.get().replace('\\', '/')
-    path_water = textBoxGamepath.get() + deleteWater
-    check_filewater = path_water + 'SoftEdgeGradient.uasset1' and path_water + \
-        'SoftEdgeGradient_Linear.uasset1'
+    check_filemap = path_map + 'WeightMapPlaceholderTexture.uasset1'
 
     # if have file will rename it
     if os.path.exists(check_filemap):
-        new_namemap = path_map + 'DefaultTexture.uasset'
-        old_namemap = path_map + 'DefaultTexture.uasset1'
+        new_namemap = path_map + 'WeightMapPlaceholderTexture.uasset'
+        old_namemap = path_map + 'WeightMapPlaceholderTexture.uasset1'
         os.rename(old_namemap, new_namemap)
+
+        messagebox.showinfo("PrettyMap", "Reset done!")
+
+    elif (not os.path.exists(path_map + 'WeightMapPlaceholderTexture.uasset1')) and (not os.path.exists(path_map + 'WeightMapPlaceholderTexture.uasset')):
+
+        shutil.copyfile('missingfile/WeightMapPlaceholderTexture.uasset',
+                        path_map + 'WeightMapPlaceholderTexture.uasset')
 
         messagebox.showinfo("PrettyMap", "Reset done!")
 
     else:
         messagebox.showerror("PrettyMap", "still default")
 
-    if os.path.exists(check_filewater):
+    # path file
+    deleteWater = '\ShooterGame\Content\PrimalEarth\Effects\Textures\Generic\\'
+    path_water = textBoxGamepath.get().replace('\\', '/')
+    path_water = textBoxGamepath.get() + deleteWater
+    check_filewater1 = path_water + 'SoftEdgeGradient.uasset' and path_water + \
+        'SoftEdgeGradient_Linear.uasset'
+    check_filewater2 = path_water + 'SoftEdgeGradient.uasset1' and path_water + \
+        'SoftEdgeGradient_Linear.uasset1'
+
+    # if have file will rename it
+    if os.path.exists(check_filewater2):
+
         new_namewater1 = path_water + 'SoftEdgeGradient.uasset'
         old_namewater1 = path_water + 'SoftEdgeGradient.uasset1'
         os.rename(old_namewater1, new_namewater1)
@@ -183,6 +199,15 @@ def reset():
         os.rename(old_namewater2, new_namewater2)
 
         messagebox.showinfo("Topwater", "Reset done!")
+
+    elif (not os.path.exists(check_filewater1)) and (not os.path.exists(check_filewater2)):
+
+        shutil.copyfile('missingfile/SoftEdgeGradient.uasset',
+                        path_water + 'SoftEdgeGradient.uasset')
+        shutil.copyfile('missingfile/SoftEdgeGradient_Linear.uasset',
+                        path_water + 'SoftEdgeGradient_Linear.uasset')
+
+        messagebox.showinfo("Change to default ini", "Done!")
 
     else:
         messagebox.showerror("Topwater", "still default")
@@ -223,6 +248,7 @@ with open('gamelocation.txt', 'r')as ofile:
 MainWindow = Tk()
 MainWindow.title("Gamer EditorArk")
 MainWindow.geometry("300x70")
+MainWindow.iconbitmap("icon.ico")
 
 # input area user path
 lablePath = Label(
